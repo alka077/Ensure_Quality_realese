@@ -7,10 +7,10 @@ provider "azurerm" {
 }
 terraform {
   backend "azurerm" {
-    storage_account_name = "storage9udacitydevops"
+    storage_account_name = "storage93udacitydevops"
     container_name       = "mycontainer"
     key                  = "terraform.tfstate"
-    access_key           = "CO0sMhcejpDI8ua9z535HMeyC1kTvHGPhpjHTtNyDdWQSOjRO/iA00gAHrcckAEwn8LvUR284q1k+AStxgM/8A=="
+    access_key           = "u/PAELKnnT5ZgUAcKEQ1DYpG3aszVTFoCCGg8hqNjNfM6nr6mIPG2V+JNSnmP9vNpmYpOVXnSLc9+ASteFPvSw=="
   }
 }
 module "resource_group" {
@@ -50,5 +50,13 @@ module "publicip" {
   location         = "${var.location}"
   application_type = "${var.application_type}"
   resource_type    = "publicip"
+  resource_group   = "${module.resource_group.resource_group_name}"
+}
+
+module "vm" {
+  source           = "./modules/vm"
+  location         = "${var.location}"
+  application_type = "${var.application_type}"
+  resource_type    = "vm"
   resource_group   = "${module.resource_group.resource_group_name}"
 }
