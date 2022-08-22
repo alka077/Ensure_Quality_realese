@@ -1,0 +1,73 @@
+name: Azure Pipelines
+variables:
+  python.version: '3.7.6'
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      name: myAgentPool
+    steps:
+    # Needed for Terraform VM deployment
+    - task: InstallSSHKey@0
+      inputs:
+        knownHostsEntry: 'default'
+        sshPublicKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFfHz/4QLad4gC5zPzaFef/4ZTOh/ONuyreOho+x+J1pVK/esXufuIZC8D2EaWmcxTDvteqrJ6Nr4J4LWbvTmS2GD6q5XP/n56HmmTO7qjkM8j3E4yyH0mgcKqGOa7fs7FK4XhiiTcQZe8G1ez9+UoJ+epm/UeUK9j6RtpveBjAPEa8CQi11OndjQuLlsRoBHr4c9drk7crm5ZmlCmB9vAV17MaO9a2iRCAcav0iEmkm1P1+ii3IlZVXsqL+HMP8HZp5dPppbx0E1IGbsp18JXMVtlQtqyghar6AYBvESst7rvhPGMzWU7JvH30FMuSdXPL7l1d3ibt0Nbs3568giOfpX9RLT90Wl7nGi/pI5rGiHY5PlS4bU8GXU92WQ/Bb049MS59uLVbHeABEQ8aZxRvAbSRKUuGxsZ1CENBZJMgMUohs1mxJZua+z3S9t1f/MG8tl8YJK5n3a+BoI0L3w38y7/Y1E3DbBJFjJHChTCRCGAjl7mxITNihC9W1uIN9U= odl_user@cc-d1ac1cc6-789fbf4db8-bnfnt'
+        sshKeySecureFile: 'id_rsa'
+
+    - task: TerraformInstaller@0
+      displayName: Install Terraform
+      inputs:
+        terraformVersion: 'latest'
+    
+    - task: ArchiveFiles@2
+      displayName: 'Archive FakeRestAPI'
+      inputs:
+        rootFolderOrFile: 'path/to/fakerestapi'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
+      displayName: 'Upload Package'
+      artifact: drop-fakerestapi
+- stage:
+  jobs:
+  - deployment: FakeRestAPI
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    environment: 'TEST'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            displayName: 'Deploy Azure Web App'
+            inputs:
+              azureSubscription: ''
+              appName: ''
+              appType: webApp
+              package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+  # - deployment: VMDeploy
+  #   displayName: NAME
+  #   environment:
+  #     name:  ENVIRONMENT NAME
+  #     resourceType: VirtualMachine
+  #     tags: TAG NAME
+  #   strategy:
+  #     runOnce:
+  #       deploy:
+  #         steps:
+  #         - task: Bash@3
+  #           inputs:
+  #             targetType: 'inline'
+  #             script: |
+  #               #! /bin/bash
+                
+  #               sudo apt-get upgrade -y
+  #               sudo apt-get install python3-pip -y
+  #               sudo apt-get install unzip -y
+  #               sudo apt-get install -y chromium-browser
+  #               pip3 install selenium
+  #               export PATH=$PATH:some/path
+
+
