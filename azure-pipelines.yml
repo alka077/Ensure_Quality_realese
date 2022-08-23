@@ -28,7 +28,7 @@ stages:
         provider: 'azurerm'
         command: 'init'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-        backendServiceArm: 'UdacityDS - 90'
+        backendServiceArm: 'serviceconn93'
         backendAzureRmResourceGroupName: 'Azuredevops'
         backendAzureRmStorageAccountName: 'storage93udacitydevops'
         backendAzureRmContainerName: 'mycontainer'
@@ -40,7 +40,7 @@ stages:
         provider: 'azurerm'
         command: apply
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-        environmentServiceName: 'UdacityDS - 90'
+        environmentServiceName: 'serviceconn93'
 
     - task: ArchiveFiles@2
       displayName: 'Archive FakeRestAPI'
