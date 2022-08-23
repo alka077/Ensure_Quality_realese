@@ -57,11 +57,11 @@ module "publicip" {
   resource_group       = "${var.resource_group}"
 }
 
-module "lvm" {
+module "linuxvm" {
   source           = "./modules/vm"
   location         = "${var.location}"
   application_type = "${var.application_type}"
-  resource_type    = "lvm"
+  resource_type    = "linuxvm"
   #resource_group   = "${module.resource_group.resource_group_name}"
   resource_group = "${var.resource_group}"
   admin_username   = "odl_user_204854"
