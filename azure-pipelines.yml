@@ -11,16 +11,17 @@ stages:
     # Needed for Terraform VM deployment
     - task: InstallSSHKey@0
       inputs:
-        knownHostsEntry: 'default'
-        sshPublicKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDg2t7porad9/8FDV87KVROQZwNoVQmqtm2019W4jOKpG7QuXYf8YZg2jYpVvFS9KwaVwEPeEhoix7P+e5AfgEdIocQgjXNwUzozIR+nrhCJKnOtbbtbXwsOYTYa9henk2frY0PGXFuHY7bGoKGzdyQbQ4uD+GdCHjKbk0brcy4JSV4yvnCSJi/OUm7nWpttapDpI+I7N46N0PObxwLz4vPrj9W+lgg68OOXu3L13YEynEVoeM+JkmxrakIDN2y5Ov2/tM2NS9jdY3nDumNfeFYIstJBj7WfDWDziDcDVLms0k20bQVSs2+1/56tmhL+CiIiuj5tiRKrqOssyINLEBH0XsrszN3QasPEBbTtmclaUwcaFfqGXrmS5Pa8BuAiipQZnm2/X/dPQH1i3yP+d9tjaVwfv0gmS3sBzdfcECu+dfQEvbLUi2Ye5OSldT6cDm2u5A3cI9Y3Qiz9nzqMguS+khq5SL6zPihkjmQXt/vPiPUO/vOBBupvxsRfHM4D9k= odl_user@cc-6976feac-7587574654-5zvqg'
+        knownHostsEntry: 'AAAAB3NzaC1yc2EAAAADAQABAAABgQDg2t7porad9/8FDV87KVROQZwNoVQmqtm2019W4jOKpG7QuXYf8YZg2jYpVvFS9KwaVwEPeEhoix7P+e5AfgEdIocQgjXNwUzozIR+nrhCJKnOtbbtbXwsOYTYa9henk2frY0PGXFuHY7bGoKGzdyQbQ4uD+GdCHjKbk0brcy4JSV4yvnCSJi/OUm7nWpttapDpI+I7N46N0PObxwLz4vPrj9W+lgg68OOXu3L13YEynEVoeM+JkmxrakIDN2y5Ov2/tM2NS9jdY3nDumNfeFYIstJBj7WfDWDziDcDVLms0k20bQVSs2+1/56tmhL+CiIiuj5tiRKrqOssyINLEBH0XsrszN3QasPEBbTtmclaUwcaFfqGXrmS5Pa8BuAiipQZnm2/X/dPQH1i3yP+d9tjaVwfv0gmS3sBzdfcECu+dfQEvbLUi2Ye5OSldT6cDm2u5A3cI9Y3Qiz9nzqMguS+khq5SL6zPihkjmQXt/vPiPUO/vOBBupvxsRfHM4D9k= odl_user@cc-6976feac-7587574654-5zvqg'
+        #sshPublicKey: 'ssh-rsa '
         sshKeySecureFile: 'id_rsa'
 
-    - task: TerraformInstaller@0
+    - task: TerraformInstaller
       displayName: Install Terraform
       inputs:
         terraformVersion: 'latest'
 
-    - task: TerraformTaskV1@0
+    - task: TerraformCLI
+      displayName: 'terraform init'
       inputs:
         provider: 'azurerm'
         command: 'init'
@@ -31,7 +32,8 @@ stages:
         backendAzureRmContainerName: 'mycontainer'
         backendAzureRmKey: 'tf/terraform.tfstate'
 
-    - task: TerraformTaskV1@0
+    - task: TerraformCLI
+      displayName: 'terraform apply'
       inputs:
         provider: 'azurerm'
         command: 'apply'
