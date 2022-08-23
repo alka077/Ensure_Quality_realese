@@ -16,8 +16,8 @@ resource "tls_private_key" "main_ssh"{
 	rsa_bits = 4096
 }
 
-resource "azurerm_linux_virtual_machine" "" {
-  name                = "myLinuxVM"
+resource "azurerm_linux_virtual_machine" "myLVM" {
+  name                = "${var.application_type}-vm"
   location            = "${var.location}"
   resource_group_name = "${var.resource_group}"
   size                = "Standard_D2s_v3"
