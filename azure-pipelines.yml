@@ -16,11 +16,7 @@ stages:
         knownHostsEntry: 'AAAAB3NzaC1yc2EAAAADAQABAAABgQC1+RFxpYPGklsmGScM31+e6SLuV+0A0yGVKaTh5lEemZyuC7nHqQojMOMn8YFGT2YQjBN9U2hYu6vct9wy//B/xruJ7+/2XAOIJQOXRWidsj7BeoX775D5zemHfNyAdHc/+ePrVLXZmn1GiyZJxO9EwgZpKGW9efthBF7bAS9nAFDLD/BNP7m8D+cVjW8HewXl/wju/ew17wBZFIt0PDDwwbjBisXOzUkKSw0n8VyYmo4CyW9gRQmXPPKKFX+XTmT5rGW2Z2/nBqp6tktp2rUYiG33i+Ylkpe5WDpyLObzp3vsfRQVDVeEAyZfAwiYQ6Cm1QY3/+048W8eiwLOa40mW3qYkcCjUVLZ6bR/rHCmrpyyo2ILc4sHaFxqFhP3I0QSmtve9w3htrgI3+CwdG/5f2TstRn3CqBeuKFf06lT/zYHi+Rf98arn48skR2hgTKKMfFaxP353moHyshzo37caGP297ZobobU4bhZrV/4hUEgbHX5OtoX7TvyfMmcsiU='
         sshPublicKey: $(sshPublicKey)
         #sshKeySecureFile: 'id_rsa'
-    
-    - task: TerraformCLI@0
-      inputs:
-        command: 'validate'
-        allowTelemetryCollection: true
+
     - task: CmdLine@2
       inputs:
         script: | 
