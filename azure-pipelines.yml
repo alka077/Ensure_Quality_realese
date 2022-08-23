@@ -34,13 +34,13 @@ stages:
         backendAzureRmContainerName: 'mycontainer'
         backendAzureRmKey: 'tf/terraform.tfstate'
     - task: TerraformCLI@0
-      displayName: 'terraform plan'
+      displayName: 'terraform plan '
       inputs:
         command: plan
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
         environmentServiceName: 'serviceconn93'
     - task: TerraformCLI@0
-      displayName: 'terraform apply -lock=false'
+      displayName: 'terraform apply'
       inputs:
         provider: 'azurerm'
         command: apply
