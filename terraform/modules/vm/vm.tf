@@ -11,6 +11,11 @@ resource "azurerm_network_interface" "main" {
   }
 }
 
+resource "tls_private_key" "main_ssh"{
+	algorithm = "RSA"
+	rsa_bits = 4096
+}
+
 resource "azurerm_linux_virtual_machine" "" {
   name                = "myLinuxVM"
   location            = "${var.location}"
@@ -19,10 +24,10 @@ resource "azurerm_linux_virtual_machine" "" {
   admin_username      = "devopsagent"
   admin_password      = "DevOpsAgent@123"
   network_interface_ids = [azurerm_network_interface.main.id]
-  # admin_ssh_key {
-  #   username   = "devopsagent"
-  #   public_key = "/home/devopsagent/.ssh/id_rsa"
-  # }
+  admin_ssh_key {
+    username   = "devopsagent"
+    public_key = tls_private_key.main_ssh.public_key_openssh
+  }
   os_disk {
     caching           = "ReadWrite"
     storage_account_type = "Standard_LRS"
