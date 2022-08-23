@@ -1,25 +1,47 @@
 name: Azure Pipelines
 variables:
   python.version: '3.7.6'
+  #sshPublicKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC1+RFxpYPGklsmGScM31+e6SLuV+0A0yGVKaTh5lEemZyuC7nHqQojMOMn8YFGT2YQjBN9U2hYu6vct9wy//B/xruJ7+/2XAOIJQOXRWidsj7BeoX775D5zemHfNyAdHc/+ePrVLXZmn1GiyZJxO9EwgZpKGW9efthBF7bAS9nAFDLD/BNP7m8D+cVjW8HewXl/wju/ew17wBZFIt0PDDwwbjBisXOzUkKSw0n8VyYmo4CyW9gRQmXPPKKFX+XTmT5rGW2Z2/nBqp6tktp2rUYiG33i+Ylkpe5WDpyLObzp3vsfRQVDVeEAyZfAwiYQ6Cm1QY3/+048W8eiwLOa40mW3qYkcCjUVLZ6bR/rHCmrpyyo2ILc4sHaFxqFhP3I0QSmtve9w3htrgI3+CwdG/5f2TstRn3CqBeuKFf06lT/zYHi+Rf98arn48skR2hgTKKMfFaxP353moHyshzo37caGP297ZobobU4bhZrV/4hUEgbHX5OtoX7TvyfMmcsiU='
 stages:
 - stage: Build
   jobs:
   - job: Build
     pool:
+      vmImage: 'ubuntu-20.04'
       name: myAgentPool
     steps:
     # Needed for Terraform VM deployment
-    - task: InstallSSHKey@0
-      inputs:
-        knownHostsEntry: 'default'
-        sshPublicKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFfHz/4QLad4gC5zPzaFef/4ZTOh/ONuyreOho+x+J1pVK/esXufuIZC8D2EaWmcxTDvteqrJ6Nr4J4LWbvTmS2GD6q5XP/n56HmmTO7qjkM8j3E4yyH0mgcKqGOa7fs7FK4XhiiTcQZe8G1ez9+UoJ+epm/UeUK9j6RtpveBjAPEa8CQi11OndjQuLlsRoBHr4c9drk7crm5ZmlCmB9vAV17MaO9a2iRCAcav0iEmkm1P1+ii3IlZVXsqL+HMP8HZp5dPppbx0E1IGbsp18JXMVtlQtqyghar6AYBvESst7rvhPGMzWU7JvH30FMuSdXPL7l1d3ibt0Nbs3568giOfpX9RLT90Wl7nGi/pI5rGiHY5PlS4bU8GXU92WQ/Bb049MS59uLVbHeABEQ8aZxRvAbSRKUuGxsZ1CENBZJMgMUohs1mxJZua+z3S9t1f/MG8tl8YJK5n3a+BoI0L3w38y7/Y1E3DbBJFjJHChTCRCGAjl7mxITNihC9W1uIN9U= odl_user@cc-d1ac1cc6-789fbf4db8-bnfnt'
-        sshKeySecureFile: 'id_rsa'
+    # - task: InstallSSHKey@0
+    #   inputs:
+    #     knownHostsEntry: 'AAAAB3NzaC1yc2EAAAADAQABAAABgQC1+RFxpYPGklsmGScM31+e6SLuV+0A0yGVKaTh5lEemZyuC7nHqQojMOMn8YFGT2YQjBN9U2hYu6vct9wy//B/xruJ7+/2XAOIJQOXRWidsj7BeoX775D5zemHfNyAdHc/+ePrVLXZmn1GiyZJxO9EwgZpKGW9efthBF7bAS9nAFDLD/BNP7m8D+cVjW8HewXl/wju/ew17wBZFIt0PDDwwbjBisXOzUkKSw0n8VyYmo4CyW9gRQmXPPKKFX+XTmT5rGW2Z2/nBqp6tktp2rUYiG33i+Ylkpe5WDpyLObzp3vsfRQVDVeEAyZfAwiYQ6Cm1QY3/+048W8eiwLOa40mW3qYkcCjUVLZ6bR/rHCmrpyyo2ILc4sHaFxqFhP3I0QSmtve9w3htrgI3+CwdG/5f2TstRn3CqBeuKFf06lT/zYHi+Rf98arn48skR2hgTKKMfFaxP353moHyshzo37caGP297ZobobU4bhZrV/4hUEgbHX5OtoX7TvyfMmcsiU='
+    #     sshPublicKey: $(sshPublicKey)
+    #     #sshKeySecureFile: 'id_rsa'
 
     - task: TerraformInstaller@0
       displayName: Install Terraform
       inputs:
         terraformVersion: 'latest'
-    
+
+    - task: TerraformCLI@0
+      displayName: 'terraform init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+        backendServiceArm: 'serviceconn93'
+        backendAzureRmResourceGroupName: 'Azuredevops'
+        backendAzureRmStorageAccountName: 'storage93udacitydevops'
+        backendAzureRmContainerName: 'mycontainer'
+        backendAzureRmKey: 'tf/terraform.tfstate'
+
+    - task: TerraformCLI@0
+      displayName: 'terraform apply'
+      inputs:
+        provider: 'azurerm'
+        command: apply
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+        environmentServiceName: 'serviceconn93'
+
     - task: ArchiveFiles@2
       displayName: 'Archive FakeRestAPI'
       inputs:
