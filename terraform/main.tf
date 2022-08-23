@@ -13,11 +13,11 @@ terraform {
     access_key           = "0qdR03nygp2kNjqhga3kmFx4SY0ftUOODAWw1WYRyeQlEVlAKMLcXeUc4J6/1Oi/e0Me8Q/RxKC9+AStwKz7lw=="
   }
 }
-module "resource_group" {
-  source               = "./modules/resource_group"
-  resource_group       = "${var.resource_group}"
-  location             = "${var.location}"
-}
+# module "resource_group" {
+#   source               = "./modules/resource_group"
+#   resource_group       = "${var.resource_group}"
+#   location             = "${var.location}"
+# }
 module "network" {
   source               = "./modules/network"
   address_space        = "${var.address_space}"
@@ -25,7 +25,8 @@ module "network" {
   virtual_network_name = "${var.virtual_network_name}"
   application_type     = "${var.application_type}"
   resource_type        = "NET"
-  resource_group       = "${module.resource_group.resource_group_name}"
+  #resource_group       = "${module.resource_group.resource_group_name}"
+  resource_group       = "${var.resource_group}"
   address_prefixes_test  = "${var.address_prefixes_test}"
 }
 
@@ -34,7 +35,8 @@ module "nsg-test" {
   location         = "${var.location}"
   application_type = "${var.application_type}"
   resource_type    = "NSG"
-  resource_group   = "${module.resource_group.resource_group_name}"
+  #resource_group   = "${module.resource_group.resource_group_name}"
+  resource_group       = "${var.resource_group}"
   subnet_id        = "${module.network.subnet_id_test}"
   address_prefix_test = "${var.address_prefix_test}"
 }
@@ -43,14 +45,16 @@ module "appservice" {
   location         = "${var.location}"
   application_type = "${var.application_type}"
   resource_type    = "AppService"
-  resource_group   = "${module.resource_group.resource_group_name}"
+  #resource_group   = "${module.resource_group.resource_group_name}"
+  resource_group       = "${var.resource_group}"
 }
 module "publicip" {
   source           = "./modules/publicip"
   location         = "${var.location}"
   application_type = "${var.application_type}"
   resource_type    = "publicip"
-  resource_group   = "${module.resource_group.resource_group_name}"
+  #resource_group   = "${module.resource_group.resource_group_name}"
+  resource_group       = "${var.resource_group}"
 }
 
 module "lvm" {
@@ -58,7 +62,8 @@ module "lvm" {
   location         = "${var.location}"
   application_type = "${var.application_type}"
   resource_type    = "lvm"
-  resource_group   = "${module.resource_group.resource_group_name}"
+  #resource_group   = "${module.resource_group.resource_group_name}"
+  resource_group       = "${var.resource_group}"
   subnet_id        = "${module.network.subnet_id_test}"
   admin_username   = "odl_user_204854"
   public_ip_address = "${module.publicip.public_ip_address_id}"
