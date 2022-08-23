@@ -40,7 +40,7 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
         environmentServiceName: 'serviceconn93'
     - task: TerraformCLI@0
-      displayName: 'terraform apply'
+      displayName: 'terraform apply -lock=false'
       inputs:
         provider: 'azurerm'
         command: apply
