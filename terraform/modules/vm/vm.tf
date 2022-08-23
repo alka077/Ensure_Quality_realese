@@ -21,7 +21,7 @@ resource "azurerm_linux_virtual_machine" "" {
   network_interface_ids = [azurerm_network_interface.main.id]
   admin_ssh_key {
     username   = "devopsagent"
-    public_key = "file("/home/devopsagent/.ssh/id_rsa")"
+    public_key = "/home/devopsagent/.ssh/id_rsa"
   }
   os_disk {
     caching           = "ReadWrite"
