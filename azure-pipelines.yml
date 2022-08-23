@@ -15,12 +15,12 @@ stages:
         #sshPublicKey: 'ssh-rsa '
         sshKeySecureFile: 'id_rsa'
 
-    - task: TerraformInstaller
+    - task: TerraformInstaller@0
       displayName: Install Terraform
       inputs:
         terraformVersion: 'latest'
 
-    - task: TerraformCLI
+    - task: TerraformCLI@1
       displayName: 'terraform init'
       inputs:
         provider: 'azurerm'
@@ -32,7 +32,7 @@ stages:
         backendAzureRmContainerName: 'mycontainer'
         backendAzureRmKey: 'tf/terraform.tfstate'
 
-    - task: TerraformCLI
+    - task: TerraformCLI@2
       displayName: 'terraform apply'
       inputs:
         provider: 'azurerm'
