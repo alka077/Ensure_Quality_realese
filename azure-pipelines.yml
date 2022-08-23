@@ -32,7 +32,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
-        workingDirectory: 'terraform'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
         backendServiceArm: 'UdacityDS - 90 (09e822a9-d2e3-40f8-885b-ae82ab7bffdd)'
         backendAzureRmResourceGroupName: 'Azuredevops'
         backendAzureRmStorageAccountName: 'storage93udacitydevops'
@@ -44,7 +44,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'apply'
-        workingDirectory: 'terraform'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
         environmentServiceNameAzureRm: 'UdacityDS - 90 (09e822a9-d2e3-40f8-885b-ae82ab7bffdd)'
 
 
