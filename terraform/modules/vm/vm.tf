@@ -21,11 +21,10 @@ resource "azurerm_linux_virtual_machine" "myLVM" {
   location            = "${var.location}"
   resource_group_name = "${var.resource_group}"
   size                = "Standard_D2s_v3"
-  admin_username      = "devopsagent"
-  admin_password      = "DevOpsAgent@123"
+  admin_username      = "odl_user_204854"
   network_interface_ids = [azurerm_network_interface.main.id]
   admin_ssh_key {
-    username   = "devopsagent"
+    username   = "odl_user_204854"
     public_key = tls_private_key.main_ssh.public_key_openssh
   }
   os_disk {
