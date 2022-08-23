@@ -20,8 +20,7 @@ stages:
       inputs:
         terraformVersion: 'latest'
 
-    - task: Terraform
-      TaskV1@0:
+    - task: TerraformTaskV1@0
       inputs:
         provider: 'azurerm'
         command: 'init'
@@ -32,9 +31,8 @@ stages:
         backendAzureRmContainerName: 'mycontainer'
         backendAzureRmKey: 'tf/terraform.tfstate'
 
-    - task: Terraform
-      TaskV1@0:
-        inputs:
+    - task: TerraformTaskV1@0
+      inputs:
         provider: 'azurerm'
         command: 'apply'
         workingDirectory: 'terraform'
