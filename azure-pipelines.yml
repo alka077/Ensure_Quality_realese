@@ -36,14 +36,14 @@ stages:
     - task: TerraformCLI@0
       displayName: 'terraform plan '
       inputs:
-        command: plan
+        command: 'plan'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
         environmentServiceName: 'serviceconn93'
     - task: TerraformCLI@0
       displayName: 'terraform apply'
       inputs:
         provider: 'azurerm'
-        command: apply
+        command: 'apply'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
         environmentServiceName: 'serviceconn93'
 
