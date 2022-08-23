@@ -33,7 +33,7 @@ stages:
         provider: 'azurerm'
         command: 'init'
         workingDirectory: 'terraform'
-        backendServiceArm: '09e822a9-d2e3-40f8-885b-ae82ab7bffdd'
+        backendServiceArm: 'UdacityDS - 90 (09e822a9-d2e3-40f8-885b-ae82ab7bffdd)'
         backendAzureRmResourceGroupName: 'Azuredevops'
         backendAzureRmStorageAccountName: 'storage93udacitydevops'
         backendAzureRmContainerName: 'mycontainer'
@@ -45,7 +45,7 @@ stages:
         provider: 'azurerm'
         command: 'apply'
         workingDirectory: 'terraform'
-        environmentServiceNameAzureRm: '09e822a9-d2e3-40f8-885b-ae82ab7bffdd'
+        environmentServiceNameAzureRm: 'UdacityDS - 90 (09e822a9-d2e3-40f8-885b-ae82ab7bffdd)'
 
 
     - task: ArchiveFiles@2
