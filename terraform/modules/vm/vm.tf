@@ -19,10 +19,10 @@ resource "azurerm_linux_virtual_machine" "" {
   admin_username      = "devopsagent"
   admin_password      = "DevOpsAgent@123"
   network_interface_ids = [azurerm_network_interface.main.id]
-  admin_ssh_key {
-    username   = "devopsagent"
-    public_key = "/home/devopsagent/.ssh/id_rsa"
-  }
+  # admin_ssh_key {
+  #   username   = "devopsagent"
+  #   public_key = "/home/devopsagent/.ssh/id_rsa"
+  # }
   os_disk {
     caching           = "ReadWrite"
     storage_account_type = "Standard_LRS"
