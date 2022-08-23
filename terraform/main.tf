@@ -7,10 +7,10 @@ provider "azurerm" {
 }
 terraform {
   backend "azurerm" {
-    storage_account_name = "storage93udacitydevops"
-    container_name       = "mycontainer"
+    storage_account_name = "storaccountdevops"
+    container_name       = "mycontainer1"
     key                  = "terraform.tfstate"
-    access_key           = "0qdR03nygp2kNjqhga3kmFx4SY0ftUOODAWw1WYRyeQlEVlAKMLcXeUc4J6/1Oi/e0Me8Q/RxKC9+AStwKz7lw=="
+    access_key           = "SjiczHrYPUj4WNJVwlD2WFh9+3hcs5pZyiaRgUmW26aY/KkLbaRu/21xDOXsh8K6Fn0LKiQ0pEQh+AStZELaWQ=="
   }
 }
 # module "resource_group" {
@@ -27,7 +27,7 @@ module "network" {
   resource_type        = "NET"
   #resource_group       = "${module.resource_group.resource_group_name}"
   resource_group       = "${var.resource_group}"
-  address_prefixes_test  = "${var.address_prefixes_test}"
+  address_prefixes_test  = ["10.5.1.0/24"]
 }
 
 module "nsg-test" {
@@ -63,8 +63,8 @@ module "lvm" {
   application_type = "${var.application_type}"
   resource_type    = "lvm"
   #resource_group   = "${module.resource_group.resource_group_name}"
-  resource_group       = "${var.resource_group}"
-  subnet_id        = "${module.network.subnet_id_test}"
+  resource_group = "${var.resource_group}"
   admin_username   = "odl_user_204854"
-  public_ip_address = "${module.publicip.public_ip_address_id}"
+  subnet_id        = "${module.network.subnet_id_test}"
+  public_ip = "${module.publicip.public_ip_address_id}"
 }
