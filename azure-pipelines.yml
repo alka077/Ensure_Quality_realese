@@ -39,6 +39,7 @@ stages:
         command: 'plan'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
         environmentServiceName: 'serviceconn93'
+        commandOptions: -out solution.plan
     - task: TerraformCLI@0
       displayName: 'terraform apply'
       inputs:
