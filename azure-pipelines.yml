@@ -12,14 +12,35 @@ stages:
     - task: InstallSSHKey@0
       inputs:
         knownHostsEntry: 'default'
-        sshPublicKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFfHz/4QLad4gC5zPzaFef/4ZTOh/ONuyreOho+x+J1pVK/esXufuIZC8D2EaWmcxTDvteqrJ6Nr4J4LWbvTmS2GD6q5XP/n56HmmTO7qjkM8j3E4yyH0mgcKqGOa7fs7FK4XhiiTcQZe8G1ez9+UoJ+epm/UeUK9j6RtpveBjAPEa8CQi11OndjQuLlsRoBHr4c9drk7crm5ZmlCmB9vAV17MaO9a2iRCAcav0iEmkm1P1+ii3IlZVXsqL+HMP8HZp5dPppbx0E1IGbsp18JXMVtlQtqyghar6AYBvESst7rvhPGMzWU7JvH30FMuSdXPL7l1d3ibt0Nbs3568giOfpX9RLT90Wl7nGi/pI5rGiHY5PlS4bU8GXU92WQ/Bb049MS59uLVbHeABEQ8aZxRvAbSRKUuGxsZ1CENBZJMgMUohs1mxJZua+z3S9t1f/MG8tl8YJK5n3a+BoI0L3w38y7/Y1E3DbBJFjJHChTCRCGAjl7mxITNihC9W1uIN9U= odl_user@cc-d1ac1cc6-789fbf4db8-bnfnt'
+        sshPublicKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDg2t7porad9/8FDV87KVROQZwNoVQmqtm2019W4jOKpG7QuXYf8YZg2jYpVvFS9KwaVwEPeEhoix7P+e5AfgEdIocQgjXNwUzozIR+nrhCJKnOtbbtbXwsOYTYa9henk2frY0PGXFuHY7bGoKGzdyQbQ4uD+GdCHjKbk0brcy4JSV4yvnCSJi/OUm7nWpttapDpI+I7N46N0PObxwLz4vPrj9W+lgg68OOXu3L13YEynEVoeM+JkmxrakIDN2y5Ov2/tM2NS9jdY3nDumNfeFYIstJBj7WfDWDziDcDVLms0k20bQVSs2+1/56tmhL+CiIiuj5tiRKrqOssyINLEBH0XsrszN3QasPEBbTtmclaUwcaFfqGXrmS5Pa8BuAiipQZnm2/X/dPQH1i3yP+d9tjaVwfv0gmS3sBzdfcECu+dfQEvbLUi2Ye5OSldT6cDm2u5A3cI9Y3Qiz9nzqMguS+khq5SL6zPihkjmQXt/vPiPUO/vOBBupvxsRfHM4D9k= odl_user@cc-6976feac-7587574654-5zvqg'
         sshKeySecureFile: 'id_rsa'
 
     - task: TerraformInstaller@0
       displayName: Install Terraform
       inputs:
         terraformVersion: 'latest'
-    
+
+    - task: Terraform
+      TaskV1@0:
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: 'terraform'
+        backendServiceArm: '09e822a9-d2e3-40f8-885b-ae82ab7bffdd'
+        backendAzureRmResourceGroupName: 'Azuredevops'
+        backendAzureRmStorageAccountName: 'storage93udacitydevops'
+        backendAzureRmContainerName: 'mycontainer'
+        backendAzureRmKey: 'tf/terraform.tfstate'
+
+    - task: Terraform
+      TaskV1@0:
+        inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: 'terraform'
+        environmentServiceNameAzureRm: '09e822a9-d2e3-40f8-885b-ae82ab7bffdd'
+
+
     - task: ArchiveFiles@2
       displayName: 'Archive FakeRestAPI'
       inputs:
