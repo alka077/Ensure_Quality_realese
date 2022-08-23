@@ -10,7 +10,7 @@ terraform {
     storage_account_name = "storage93udacitydevops"
     container_name       = "mycontainer"
     key                  = "terraform.tfstate"
-    access_key           = "u/PAELKnnT5ZgUAcKEQ1DYpG3aszVTFoCCGg8hqNjNfM6nr6mIPG2V+JNSnmP9vNpmYpOVXnSLc9+ASteFPvSw=="
+    access_key           = "0qdR03nygp2kNjqhga3kmFx4SY0ftUOODAWw1WYRyeQlEVlAKMLcXeUc4J6/1Oi/e0Me8Q/RxKC9+AStwKz7lw=="
   }
 }
 module "resource_group" {
