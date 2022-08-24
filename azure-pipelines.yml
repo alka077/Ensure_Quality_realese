@@ -89,7 +89,7 @@ stages:
                     sudo apt-get install -y chromium-chromedriver
                     pip3 install selenium
                     sudo rm -rf chromedriver*
-                    wget "https://chromedriver.storage.googleapis.com/84.0.4147.30/chromedriver_linux64.zip"
+                    wget "https://chromedriver.storage.googleapis.com/104.0.5112.79/chromedriver_linux64.zip"
               - task: ExtractFiles@1
                 displayName: 'Extract Files'
                 inputs:
