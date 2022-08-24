@@ -1,0 +1,184 @@
+{
+	"info": {
+		"_postman_id": "b0106552-7126-4d65-9fdd-f5418a9b7d06",
+		"name": "Starter APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22886931"
+	},
+	"item": [
+		{
+			"name": "Create Employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful response\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"firstname\");",
+							"});",
+							"",
+							"pm.test(\"data validation on firstname\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.firstname).to.eql(\"ak\");",
+							"});",
+							"",
+							"pm.test(\"data validation on firstname\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.lastname).to.eql(\"Sharma\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"{{email}}\",\n    \"firstname\": \"{{firstname}}\",\n    \"lastname\": \"{{lastname}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users/",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Employees",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful response\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"email\");",
+							"});",
+							"",
+							"var email= pm.variables.get(\"george.bluth@reqres.in\");",
+							"pm.test(\"get a email of id 1\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.email).to.eql(email);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}",
+					"host": [
+						"{{url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"firstname\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstname\": \"{{firstname}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "https://reqres.in/api/users",
+			"type": "string"
+		},
+		{
+			"key": "email",
+			"value": "abc@abc.com",
+			"type": "string"
+		},
+		{
+			"key": "firstname",
+			"value": "ak",
+			"type": "string"
+		},
+		{
+			"key": "lastname",
+			"value": "Sharma",
+			"type": "string"
+		}
+	]
+}
