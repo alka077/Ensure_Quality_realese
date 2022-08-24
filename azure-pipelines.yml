@@ -48,6 +48,64 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
         environmentServiceName: 'serviceconn93'
 
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      name: 'myAgentPool'
+    steps:
+    - task: ArchiveFiles@2
+      displayName: 'selenium tests'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium-tests.zip'
+    - publish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium-tests.zip'
+      displayName: 'upload Selenium Tests'
+      artifact: selenium
+
+- stage: Deployment
+  jobs:
+    - deployment: UITests
+      displayName: 'selenium UI test'
+      pool:
+        name: myAgentPool
+      environment: 'Testing'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - download: current
+                displayName: 'download selenium'
+              - task: Bash@3
+                displayName: 'Install Selenium'
+                inputs:
+                  targetType: inline
+                  script: |
+                    sudo apt-get upgrade -y
+                    sudo apt-get install python3-pip -y
+                    sudo apt-get install unzip -y 
+                    sudo apt-get install -y chromium-browser
+                    sudo apt-get install -y chromium-chromedriver
+                    pip3 install selenium
+                    export PATH=$PATH:/user/lib/chromium-Browser/
+                    cd $(Pipeline.Workspace)/selenium
+                    unzip -o $(Pipeline.Workspace)/selenium/$(Build.BuildId)-selenium-tests -d .
+              - task: Bash@3
+                displayName: 'Run Selenium tests'
+                inputs:
+                  targetType: inline
+                  script: |
+                    python3 $(System.DefaultWorkingDirectory)/automatedtesting/selenium/login.py
+
+
+
+- stage: Build
+  jobs: 
+  - job: Build
+    pool:
+      name: 'myAgentPool'
+    steps:         
     - task: ArchiveFiles@2
       displayName: 'Archive FakeRestAPI'
       inputs:
