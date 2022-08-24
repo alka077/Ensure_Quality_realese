@@ -75,9 +75,7 @@
 							"pm.test(\"get a email of id 1\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.email).to.eql(email);",
-							"});",
-							"",
-							""
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -87,16 +85,19 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}",
+					"raw": "{{url}}/1",
 					"host": [
 						"{{url}}"
+					],
+					"path": [
+						"1"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "New Request",
+			"name": "update employee",
 			"event": [
 				{
 					"listen": "test",
