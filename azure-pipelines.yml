@@ -101,10 +101,9 @@ stages:
                   targetType: inline
                   script: |
                     #! /bin/bash
-                    sudo cp chromedriver /usr/bin
-                    pwd
-                    echo $PATH
-                    ls -la
+                    export PATH=$PATH:/usr/bin/chromedriver
+                    cd $(Pipeline.Workspace)/selenium
+                    unzip -o $(Pipeline.Workspace)/selenium/$(Build.BuildId)-selenium-tests -d .
                     echo "completedCopying"
               - task: Bash@3
                 displayName: 'Run Selenium tests'
