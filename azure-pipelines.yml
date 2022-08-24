@@ -89,22 +89,30 @@ stages:
                     pip3 install selenium
                     sudo rm -rf chromedriver*
                     wget "https://chromedriver.storage.googleapis.com/103.0.5060.134/chromedriver_linux64.zip"
-              - task: ExtractFiles@1
-                displayName: 'Extract Files'
-                inputs:
-                  archiveFilePatterns: '*chromedriver_linux64.zip'
-                  destinationFolder: ''
-                  cleanDestinationFolder: false
-              - task: Bash@3
-                displayName: 'copy files to bin'
-                inputs:
-                  targetType: inline
-                  script: |
-                    #! /bin/bash
-                    export PATH=$PATH:/usr/bin/chromedriver
-                    cd $(Pipeline.Workspace)/selenium
-                    unzip -o $(Pipeline.Workspace)/selenium/$(Build.BuildId)-selenium-tests -d .
-                    echo "completedCopying"
+                    pwd
+                    hostname
+                    unzip chromedriver_linux64.zip
+                    sudo mv chromedriver /usr/bin/chromedriver
+                    sudo chown root:root /usr/bin/chromedriver
+                    sudo chmod +x /usr/bin/chromedriver
+                    chromium-browser -version
+                    chromedriver --version
+              # - task: ExtractFiles@1
+              #   displayName: 'Extract Files'
+              #   inputs:
+              #     archiveFilePatterns: '*chromedriver_linux64.zip'
+              #     destinationFolder: ''
+              #     cleanDestinationFolder: false
+              # - task: Bash@3
+              #   displayName: 'copy files to bin'
+              #   inputs:
+              #     targetType: inline
+              #     script: |
+              #       #! /bin/bash
+              #       export PATH=$PATH:/usr/bin/chromedriver
+              #       cd $(Pipeline.Workspace)/selenium
+              #       unzip -o $(Pipeline.Workspace)/selenium/$(Build.BuildId)-selenium-tests -d .
+              #       echo "completedCopying"
               - task: Bash@3
                 displayName: 'Run Selenium tests'
                 inputs:
