@@ -48,7 +48,7 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
         environmentServiceName: 'serviceconn93'
 
-- stage: UI test
+- stage: UItest
   jobs:
   - job: Build
     pool:
