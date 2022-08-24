@@ -88,7 +88,7 @@ stages:
                     sudo apt-get install -y chromium-browser
                     sudo apt-get install -y chromium-chromedriver
                     pip3 install selenium
-                    export PATH=$PATH:/user/lib/chromium-Browser/
+                    export PATH=$PATH:/user/lib/chromium-browser/
                     cd $(Pipeline.Workspace)/selenium
                     unzip -o $(Pipeline.Workspace)/selenium/$(Build.BuildId)-selenium-tests -d .
               - task: Bash@3
