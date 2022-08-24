@@ -123,10 +123,10 @@ stages:
           continueOnError: true
           inputs:
             script: 'newman run regression.postman_collection.json'
-            workingDirectory: ''
+            workingDirectory: '$(System.DefaultWorkingDirectory)/Ensure_Quality_realese/automatedtesting/postman'
         - task: CmdLine@2
           displayName: 'Data Validation Test Suite'
           inputs:
             script: newman run datavalidation.postman_collection.json
-            workingDirectory: ''
+            workingDirectory: '$(System.DefaultWorkingDirectory)/Ensure_Quality_realese/automatedtesting/postman'
 
