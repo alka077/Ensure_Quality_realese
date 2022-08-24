@@ -85,8 +85,7 @@ stages:
                     sudo apt-get upgrade -y
                     sudo apt-get install python3-pip -y
                     sudo apt-get install unzip -y
-                    sudo apt-get uninstall -y chromium-browser
-                    sudo apt-get uninstall -y chromium-chromedriver
+                    sudo apt-get install -y chromium-chromedriver
                     pip3 install selenium
                     sudo rm -rf chromedriver*
                     wget "https://chromedriver.storage.googleapis.com/103.0.5060.134/chromedriver_linux64.zip"
@@ -103,6 +102,9 @@ stages:
                   script: |
                     #! /bin/bash
                     sudo cp chromedriver /usr/bin
+                    pwd
+                    echo $PATH
+                    ls -la
                     echo "completedCopying"
               - task: Bash@3
                 displayName: 'Run Selenium tests'
