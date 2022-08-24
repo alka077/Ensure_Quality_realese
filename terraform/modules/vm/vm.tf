@@ -20,7 +20,7 @@ resource "azurerm_linux_virtual_machine" "lvm" {
   name                = "${var.application_type}-vm"
   location            = "${var.location}"
   resource_group_name = "${var.resource_group}"
-  size                = "Standard_D2s_v3"
+  size                = "Standard_B1s"
   admin_username      = "odl_user_204854"
   network_interface_ids = [azurerm_network_interface.main.id]
   admin_ssh_key {
