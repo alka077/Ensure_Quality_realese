@@ -100,6 +100,32 @@ stages:
                   targetType: inline
                   script: |
                     python3 $(System.DefaultWorkingDirectory)/automatedtesting/selenium/login.py
+- stage: postmanTest
+  jobs:
+    - job: runPostmanTest
+      pool:
+        name: myAgentPool
+      steps:
+        - task: CmdLine@2
+          displayName: Install newman
+          inputs:
+            script: |
+              sudo apt update
+              sudo npm install -g newman
+              sudo npm install -g newman-reporter-junitfull
+            workingDirectory: '$(System.DefaultWorkingDirectory)'
+        
+        - task: CmdLine@2
+          displayName: 'Run Regression Test Suite'
+          continueOnError: true
+          inputs:
+            script: 'newman run regression.postman_collection.json'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman/regression.postman_collection.json'
+        - task: CmdLine@2
+          displayName: 'Data Validation Test Suite'
+          inputs:
+            script: newman run datavalidation.postman_collection.json
+            workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman/datavalidation.postman_collection.json'
 
 - stage: Build
   jobs: 
