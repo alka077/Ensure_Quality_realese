@@ -113,6 +113,7 @@ stages:
           inputs:
             script: |
               sudo apt update
+              sudo apt install -y nodejs npm
               sudo npm install -g newman
               sudo npm install -g newman-reporter-junitfull
             workingDirectory: '$(System.DefaultWorkingDirectory)'
