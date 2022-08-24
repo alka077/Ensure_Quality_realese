@@ -3,9 +3,9 @@ variables:
   python.version: '3.7.6'
   #sshPublicKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC1+RFxpYPGklsmGScM31+e6SLuV+0A0yGVKaTh5lEemZyuC7nHqQojMOMn8YFGT2YQjBN9U2hYu6vct9wy//B/xruJ7+/2XAOIJQOXRWidsj7BeoX775D5zemHfNyAdHc/+ePrVLXZmn1GiyZJxO9EwgZpKGW9efthBF7bAS9nAFDLD/BNP7m8D+cVjW8HewXl/wju/ew17wBZFIt0PDDwwbjBisXOzUkKSw0n8VyYmo4CyW9gRQmXPPKKFX+XTmT5rGW2Z2/nBqp6tktp2rUYiG33i+Ylkpe5WDpyLObzp3vsfRQVDVeEAyZfAwiYQ6Cm1QY3/+048W8eiwLOa40mW3qYkcCjUVLZ6bR/rHCmrpyyo2ILc4sHaFxqFhP3I0QSmtve9w3htrgI3+CwdG/5f2TstRn3CqBeuKFf06lT/zYHi+Rf98arn48skR2hgTKKMfFaxP353moHyshzo37caGP297ZobobU4bhZrV/4hUEgbHX5OtoX7TvyfMmcsiU='
 stages:
-- stage: Build
+- stage: Terraform
   jobs:
-  - job: Build
+  - job: terraform
     pool:
       vmImage: 'ubuntu-20.04'
       name: myAgentPool
@@ -48,6 +48,65 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
         environmentServiceName: 'serviceconn93'
 
+- stage: UItest
+  jobs:
+  - job: Build
+    pool:
+      name: 'myAgentPool'
+    steps:
+    - task: ArchiveFiles@2
+      displayName: 'selenium tests'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium-tests.zip'
+    - publish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium-tests.zip'
+      displayName: 'upload Selenium Tests'
+      artifact: selenium
+
+- stage: Deployment
+  jobs:
+    - deployment: UITests
+      displayName: 'selenium UI test'
+      pool:
+        name: myAgentPool
+      environment: 'Testing'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - download: current
+                displayName: 'download selenium'
+              - task: Bash@3
+                displayName: 'Install Selenium'
+                inputs:
+                  targetType: inline
+                  script: |
+                    sudo apt-get upgrade -y
+                    sudo apt-get install python3-pip -y
+                    sudo apt-get install unzip -y
+                    sudo apt-get install -y chromium-browser
+                    export PATH=$PATH:/usr/bin/chromium-browser
+                    pip3 install selenium
+                    sudo rm -rf chromedriver*
+                    wget "https://chromedriver.storage.googleapis.com/103.0.5060.134/chromedriver_linux64.zip"
+                    pwd
+                    hostname
+                    unzip chromedriver_linux64.zip
+                    export PATH=$PATH:/usr/bin/chromedriver
+              - task: Bash@3
+                displayName: 'Run Selenium tests'
+                inputs:
+                  targetType: inline
+                  script: |
+                    python3 $(System.DefaultWorkingDirectory)/automatedtesting/selenium/login.py
+
+- stage: Build
+  jobs: 
+  - job: Build
+    pool:
+      name: 'myAgentPool'
+    steps:         
     - task: ArchiveFiles@2
       displayName: 'Archive FakeRestAPI'
       inputs:
