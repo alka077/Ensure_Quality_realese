@@ -6,7 +6,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 options = ChromeOptions()
 options.add_argument("--headless")
 driver = webdriver.Chrome(options=options)
-driver = webdriver.Chrome()
+#driver = webdriver.Chrome()
 # Start the browser and login with standard_user
 def login (user, password):
     print ('Starting the browser...')
