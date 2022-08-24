@@ -48,7 +48,7 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
         environmentServiceName: 'serviceconn93'
 
-- stage: Build1
+- stage: UI test
   jobs:
   - job: Build
     pool:
@@ -96,7 +96,7 @@ stages:
                 inputs:
                   targetType: inline
                   script: |
-                    python3 $(System.DefaultWorkingDirectory)/automatedtesting/selenium/login.py
+                    python3 $(System.DefaultWorkingDirectory)/selenium/selenium/login.py
 
 
 
