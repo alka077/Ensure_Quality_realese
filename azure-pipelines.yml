@@ -96,7 +96,7 @@ stages:
                 inputs:
                   targetType: inline
                   script: |
-                    python3 $(System.DefaultWorkingDirectory)/selenium/selenium/login.py
+                    python3 $(System.DefaultWorkingDirectory)/automatedtesting/selenium/login.py
 
 
 
