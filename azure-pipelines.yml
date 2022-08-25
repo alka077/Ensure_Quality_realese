@@ -136,14 +136,9 @@ stages:
       pool:
         name: myAgentPool
       steps:
-        - task: Bash@3
-          displayName: Install Jmeter
+        - task: JMeterInstaller@0
           inputs:
-            targetType: inline
-            script: |
-              sudo apt-get install openjdk-11-jre-headless
-              wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.4.1.tgz -O jmeter.tgz
-              tar -xzvf jmeter.tgz
+            jmeterVersion: '5.4.2'
         - task: Bash@3
           displayName: runJmeterTests
           inputs:
