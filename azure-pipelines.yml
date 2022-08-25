@@ -97,7 +97,7 @@ stages:
                   script: |
                     python3 $(System.DefaultWorkingDirectory)/automatedtesting/selenium/login.py
 
-- stage: postmanTest
+- stage: Postman_and_Jmeter_tests
   displayName: 'PostmanTest'
   jobs:
     - job: runPostmanTest
@@ -136,11 +136,16 @@ stages:
       pool:
         name: myAgentPool
       steps:
-        - task: Bash@3
-          displayName: install default java
+        # - task: Bash@3
+        #   displayName: install default java
+        #   inputs:
+        #     targetType: inline
+        #     script: sudo apt install default-jre
+        - task: adopt-openjdk-installer@1
           inputs:
-            targetType: inline
-            script: sudo apt install default-jre
+            useLatestOption: 'latest'
+            jdkArchitectureOption: 'x64'
+            jvmOption: 'hotspot'
         - task: JMeterInstaller@0
           inputs:
             jmeterVersion: '5.4.1'
