@@ -125,4 +125,30 @@ stages:
           inputs:
             script: newman run automatedtesting/postman/datavalidation.postman_collection.json -e automatedtesting/postman/datavalidationenvironment.postman_environment.json --reporters cli,junit --reporter-junit-export Results\junitReport.xml
             workingDirectory: '$(System.DefaultWorkingDirectory)'
+        - task: PublishTestResults@2
+          inputs:
+            testResultsFormat: 'JUnit'
+            testResultsFiles: '**/TEST-*.xml'
+
+
+    - job: JmeterTests
+      displayName: JmeterTestsRun
+      pool:
+        name: myAgentPool
+      steps:
+        - task: Bash@3
+          displayName: Install Jmeter
+          inputs:
+            targetType: inline
+            script: |
+              sudo apt-get install openjdk-11-jre-headless
+              wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.4.1.tgz -O jmeter.tgz
+              tar -xzvf jmeter.tgz
+        - task: Bash@3
+          displayName: runJmeterTests
+          inputs:
+            targetType: inline
+            script: |
+              apache-jmeter-5.4.1/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTest.jmx
+
 
