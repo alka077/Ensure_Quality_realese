@@ -171,15 +171,10 @@ stages:
         name: myAgentPool
       steps:
         - task: Bash@3
-          displayName: install default java
+          displayName: install jdk
           inputs:
             targetType: inline
             script: sudo apt-get install openjdk-11-jre-headless -y
-        # - task: adopt-openjdk-installer@1
-        #   inputs:
-        #     useLatestOption: 'latest'
-        #     jdkArchitectureOption: 'x64'
-        #     jvmOption: 'hotspot'
         - task: JMeterInstaller@0
           inputs:
             jmeterVersion: '5.4.1'
