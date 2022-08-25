@@ -65,12 +65,10 @@
 							"\r",
 							"pm.test(\"Your test name\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.userID).to.eql('2');\r",
+							"    pm.expect(jsonData.id).to.eql(101);\r",
 							"});\r",
 							"\r",
-							"pm.test(\"Body contains life is short to make assumptions\", function () {\r",
-							"    pm.expect(pm.response.text()).to.include(\"life is short to make assumptions\");\r",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -99,6 +97,33 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "userId",
+			"value": "2",
+			"type": "string"
 		}
 	]
 }
