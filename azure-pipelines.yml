@@ -136,9 +136,14 @@ stages:
       pool:
         name: myAgentPool
       steps:
+        - task: Bash@3
+          displayName: install default java
+          inputs:
+            targetType: inline
+            script: sudo apt install default-jre
         - task: JMeterInstaller@0
           inputs:
-            jmeterVersion: '5.4.2'
+            jmeterVersion: '5.4.1'
         - task: Bash@3
           displayName: runJmeterTests
           inputs:
