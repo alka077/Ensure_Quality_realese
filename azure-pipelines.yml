@@ -96,6 +96,40 @@ stages:
                   targetType: inline
                   script: |
                     python3 $(System.DefaultWorkingDirectory)/automatedtesting/selenium/login.py
+- stage: Build1
+  displayName: fakerestapi
+  jobs:
+  - job: Build
+    pool:
+      name: myAgentPool
+    steps:
+    - task: ArchiveFiles@2
+      displayName: 'Archive FakeRestAPI'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
+      displayName: 'Upload Package'
+      artifact: drop-fakerestapi
+- stage:
+  jobs:
+  - deployment: FakeRestAPI
+    pool:
+      name: myAgentPool
+    environment: 'TEST'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            displayName: 'Deploy Azure Web App'
+            inputs:
+              azureSubscription: 'serviceconn93'
+              appName: 'myapp1-AppService'
+              appType: webApp
+              package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
 
 - stage: Postman_and_Jmeter_tests
   displayName: 'PostmanTest'
@@ -136,16 +170,16 @@ stages:
       pool:
         name: myAgentPool
       steps:
-        # - task: Bash@3
-        #   displayName: install default java
-        #   inputs:
-        #     targetType: inline
-        #     script: sudo apt install default-jre
-        - task: adopt-openjdk-installer@1
+        - task: Bash@3
+          displayName: install default java
           inputs:
-            useLatestOption: 'latest'
-            jdkArchitectureOption: 'x64'
-            jvmOption: 'hotspot'
+            targetType: inline
+            script: sudo apt-get install openjdk-11-jre-headless -y
+        # - task: adopt-openjdk-installer@1
+        #   inputs:
+        #     useLatestOption: 'latest'
+        #     jdkArchitectureOption: 'x64'
+        #     jvmOption: 'hotspot'
         - task: JMeterInstaller@0
           inputs:
             jmeterVersion: '5.4.1'
