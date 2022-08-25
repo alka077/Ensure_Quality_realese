@@ -88,7 +88,7 @@ stages:
                     sudo apt-get install -y chromium-browser
                     sudo apt-get install -y chromium-chromedriver
                     export PATH=$PATH:/usr/bin/chromium-browser
-                    pip3 install selenium@4.1.1
+                    pip3 install selenium==4.1.1
                     export PATH=$PATH:/usr/bin/chromedriver
               - task: Bash@3
                 displayName: 'Run Selenium tests'
