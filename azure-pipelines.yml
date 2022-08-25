@@ -170,14 +170,14 @@ stages:
       pool:
         name: myAgentPool
       steps:
-        - task: Bash@3
-          displayName: install jdk
-          inputs:
-            targetType: inline
-            script: sudo apt-get install openjdk-11-jre-headless -y
+        # - task: Bash@3
+        #   displayName: install jdk
+        #   inputs:
+        #     targetType: inline
+        #     script: sudo apt-get install openjdk-11-jre-headless -y
         - task: JMeterInstaller@0
           inputs:
-            jmeterVersion: '5.4.1'
+            jmeterVersion: '5.2.1'
         - task: Bash@3
           displayName: runJmeterTests
           inputs:
