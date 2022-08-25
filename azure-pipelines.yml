@@ -123,6 +123,6 @@ stages:
         - task: CmdLine@2
           displayName: 'Data Validation Test Suite'
           inputs:
-            script: newman run automatedtesting/postman/datavalidation.postman_collection.json -e -e automatedtesting/postman/datavalidationenvironment.postman_environment.json
+            script: newman run automatedtesting/postman/datavalidation.postman_collection.json -e automatedtesting/postman/datavalidationenvironment.postman_environment.json
             workingDirectory: '$(System.DefaultWorkingDirectory)'
 
