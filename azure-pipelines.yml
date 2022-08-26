@@ -131,8 +131,8 @@ stages:
               appType: webApp
               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
 
-- stage: Postman_and_Jmeter_tests
-  displayName: 'PostmanTest'
+- stage: tests
+  displayName: 'Postman_and_Jmeter_tests'
   jobs:
     - job: runPostmanTest
       pool:
@@ -183,13 +183,13 @@ stages:
           inputs:
             targetType: inline
             script: |
-              apache-jmeter-5.2.1/bin/jmeter -n -t automatedtesting/jmeter/Endurance_Test.jmx -l automatedtesting/jmeter/Endurance_Test_result.jtl -e -f -o automatedtesting/jmeter/Endurance_Test-report.html -j automatedtesting/jmeter/Endurance_Test.log
+              jmeter -n -t automatedtesting/jmeter/Endurance_Test.jmx -l automatedtesting/jmeter/Endurance_Test_result.jtl -e -f -o automatedtesting/jmeter/Endurance_Test-report.html -j automatedtesting/jmeter/Endurance_Test.log
         - task: Bash@3
           displayName: stressTest
           inputs:
             targetType: inline
             script: |
-              apache-jmeter-5.2.1/bin/jmeter -n -t automatedtesting/jmeter/Stress_test.jmx
+              jmeter -n -t automatedtesting/jmeter/Stress_test.jmx -l automatedtesting/jmeter/Stress_Test_result.jtl -e -f -o automatedtesting/jmeter/Stress_Test-report.html -j automatedtesting/jmeter/Stress_Test.log
         - task: PublishBuildArtifacts@1
           inputs:
             PathtoPublish: 'automatedtesting/jmeter'
