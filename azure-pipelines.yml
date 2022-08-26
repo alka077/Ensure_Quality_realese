@@ -179,17 +179,19 @@ stages:
           inputs:
             jmeterVersion: '5.2.1'
         - task: Bash@3
-          displayName: runJmeterEnduranceTests
+          displayName: EnduranceTest
           inputs:
             targetType: inline
             script: |
               jmeter -n -t automatedtesting/jmeter/Endurance_Test.jmx -l automatedtesting/jmeter/Endurance_Test_result.jtl -e -f -o automatedtesting/jmeter/Endurance_Test-report.html -j automatedtesting/jmeter/Endurance_Test.log
+            workingDirectory: '$(System.DefaultWorkingDirectory)'
         - task: Bash@3
-          displayName: stressTest
+          displayName: StressTest
           inputs:
             targetType: inline
             script: |
               jmeter -n -t automatedtesting/jmeter/Stress_test.jmx -l automatedtesting/jmeter/Stress_Test_result.jtl -e -f -o automatedtesting/jmeter/Stress_Test-report.html -j automatedtesting/jmeter/Stress_Test.log
+            workingDirectory: '$(System.DefaultWorkingDirectory)'
         - task: PublishBuildArtifacts@1
           inputs:
             PathtoPublish: 'automatedtesting/jmeter'
