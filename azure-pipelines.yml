@@ -179,10 +179,22 @@ stages:
           inputs:
             jmeterVersion: '5.2.1'
         - task: Bash@3
-          displayName: runJmeterTests
+          displayName: runJmeterEnduranceTests
           inputs:
             targetType: inline
             script: |
-              apache-jmeter-5.4.1/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTest.jmx
+              apache-jmeter-5.2.1/bin/jmeter -n -t automatedtesting/jmeter/Endurance_Test.jmx -l automatedtesting/jmeter/Endurance_Test_result.jtl -e -f -o automatedtesting/jmeter/Endurance_Test-report.html -j automatedtesting/jmeter/Endurance_Test.log
+        - task: Bash@3
+          displayName: stressTest
+          inputs:
+            targetType: inline
+            script: |
+              apache-jmeter-5.2.1/bin/jmeter -n -t automatedtesting/jmeter/Stress_test.jmx
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: 'automatedtesting/jmeter'
+            ArtifactName: 'jmeter'
+            publishLocation: Container
+
 
 
